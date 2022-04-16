@@ -1,0 +1,20 @@
+add_executable(
+    version_test
+    version_test.cc
+)
+target_compile_definitions(
+    version_test
+    PUBLIC
+    FIMSRG_MAJOR_VERSION=${FermIMSRG_VERSION_MAJOR}
+    FIMSRG_MINOR_VERSION=${FermIMSRG_VERSION_MINOR}
+    FIMSRG_PATCH_VERSION=${FermIMSRG_VERSION_PATCH}
+)
+target_link_libraries(
+    version_test
+    fermimsrg::version
+    Catch2::Catch2WithMain
+    absl::strings
+)
+catch_discover_tests(
+    version_test
+)
