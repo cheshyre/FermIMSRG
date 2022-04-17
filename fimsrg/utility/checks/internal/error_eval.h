@@ -19,10 +19,10 @@ class RuntimeError : public std::runtime_error {
 std::string GenerateFullErrorMessage(const char* file, int line,
                                      const char* msg);
 
-// Check for error state (val).
+// Check for error state (error_state).
 //
 // If in error state, log error and raise fatal exception.
-void CheckForError(bool val, std::string_view msg);
+void CheckForError(bool error_state, std::string_view msg);
 
 }  // namespace internal
 }  // namespace fimsrg

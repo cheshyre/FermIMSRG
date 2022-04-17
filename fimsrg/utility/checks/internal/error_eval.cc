@@ -16,8 +16,8 @@ std::string GenerateFullErrorMessage(const char* file, int line,
   return fmt::format("({}:{}): {}", file, line, msg);
 }
 
-void CheckForError(bool val, std::string_view msg) {
-  if (!val) {
+void CheckForError(bool error_state, std::string_view msg) {
+  if (error_state) {
     spdlog::error("Runtime error: {}", msg);
     throw fimsrg::internal::RuntimeError(fmt::format("Runtime error: {}", msg));
   }
