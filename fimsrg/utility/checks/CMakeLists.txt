@@ -3,6 +3,7 @@ add_subdirectory(internal)
 add_library(
     fermimsrg_checks
     assert.h assert.cc
+    error.h error.cc
 )
 add_library(fermimsrg::checks ALIAS fermimsrg_checks)
 target_include_directories(
