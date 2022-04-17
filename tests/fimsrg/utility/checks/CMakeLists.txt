@@ -10,3 +10,15 @@ target_link_libraries(
 catch_discover_tests(
     assert_test
 )
+add_executable(
+    error_test
+    error_test.cc
+)
+target_link_libraries(
+    error_test
+    fermimsrg::checks
+    Catch2::Catch2WithMain
+)
+catch_discover_tests(
+    error_test
+)
