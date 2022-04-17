@@ -9,7 +9,7 @@
 #include "fimsrg/utility/checks/internal/error_eval.h"
 
 #define ErrorMessage(x) \
-  fimsrg::internal::GenerateFullErrorMessage(__FILE__, __LINE__, x);
+  fimsrg::internal::GenerateFullErrorMessage(__FILE__, __LINE__, x)
 
 namespace fimsrg {
 
