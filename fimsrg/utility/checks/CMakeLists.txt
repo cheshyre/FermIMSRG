@@ -10,6 +10,12 @@ target_include_directories(
     PUBLIC
     ${FIMSRG_ROOT_DIR}
 )
+target_compile_definitions(
+    fermimsrg_checks
+    PUBLIC
+    $<$<CONFIG:Debug>:FIMSRG_RUNTIME_CHECKS_ENABLED=true>
+    $<$<CONFIG:Release>:FIMSRG_RUNTIME_CHECKS_ENABLED=false>
+)
 target_link_libraries(
     fermimsrg_checks
     PUBLIC
