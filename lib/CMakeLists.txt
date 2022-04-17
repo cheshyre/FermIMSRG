@@ -8,3 +8,5 @@ set(ABSL_USE_EXTERNAL_GOOGLETEST ON CACHE BOOL "Force abseil to use external goo
 set(ABSL_FIND_GOOGLETEST OFF CACHE BOOL "Force abseil not to find googletest" FORCE)
 add_subdirectory(abseil-cpp)
 add_subdirectory(fmt)
+set(SPDLOG_FMT_EXTERNAL ON CACHE BOOL "Force spdlog to use external fmt" FORCE)
+add_subdirectory(spdlog)
