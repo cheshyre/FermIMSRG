@@ -1,3 +1,5 @@
+add_subdirectory(utility)
+
 add_executable(
     version_test
     version_test.cc
