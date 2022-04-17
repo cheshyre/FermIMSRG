@@ -24,17 +24,17 @@
 #define FIMSRG_RUNTIME_CHECKS_ENABLED false
 #endif
 
-#define Expects(x)                                                 \
-  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {           \
-    imsrg::internal::CheckPrecondition(x, __FILE__, __LINE__, #x); \
-  }
-#define Assert(x)                                               \
-  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {        \
-    imsrg::internal::CheckAssertion(x, __FILE__, __LINE__, #x); \
-  }
-#define Ensures(x)                                                  \
+#define Expects(x)                                                  \
   if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {            \
-    imsrg::internal::CheckPostcondition(x, __FILE__, __LINE__, #x); \
+    fimsrg::internal::CheckPrecondition(x, __FILE__, __LINE__, #x); \
+  }
+#define Assert(x)                                                \
+  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {         \
+    fimsrg::internal::CheckAssertion(x, __FILE__, __LINE__, #x); \
+  }
+#define Ensures(x)                                                   \
+  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {             \
+    fimsrg::internal::CheckPostcondition(x, __FILE__, __LINE__, #x); \
   }
 
 namespace fimsrg {
