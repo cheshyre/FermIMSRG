@@ -15,4 +15,5 @@ target_link_libraries(
     absl::flat_hash_map
     PRIVATE
     fermimsrg::checks
+    fmt::fmt
 )
