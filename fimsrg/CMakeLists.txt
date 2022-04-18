@@ -1,3 +1,5 @@
+add_subdirectory(utility)
+
 add_library(
     fermimsrg_version
     version.h version.cc
