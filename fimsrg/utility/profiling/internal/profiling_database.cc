@@ -25,7 +25,7 @@ inline std::vector<ProfilingData> SortProfilingData(
   std::vector<ProfilingData> events;
   events.reserve(event_data.size());
 
-  for (const auto i : event_data) {
+  for (const auto& i : event_data) {
     events.push_back(i.second);
   }
 
