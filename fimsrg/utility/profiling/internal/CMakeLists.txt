@@ -3,6 +3,7 @@ add_library(
     profiling_event_data.h
     profiling_data.h profiling_data.cc
     profiling_database.h profiling_database.cc
+    single_event_profiler.h single_event_profiler.cc
 )
 target_include_directories(
     fermimsrg_profiling_internal
@@ -16,4 +17,6 @@ target_link_libraries(
     PRIVATE
     fermimsrg::checks
     fmt::fmt
+    absl::time
+    absl::strings
 )
