@@ -2,6 +2,7 @@
 #include "fimsrg/utility/memory/internal/pooled_allocator.h"
 
 #include <cstdlib>
+#include <cstring>
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
@@ -27,6 +28,7 @@ void* PooledAllocatorSingleton::BareAllocate(std::size_t num_bytes) {
   }
   auto ptr = buffers.back();
   buffers.pop_back();
+  std::memset(ptr, 0, num_bytes);
   return ptr;
 }
 
