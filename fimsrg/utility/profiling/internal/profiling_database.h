@@ -3,6 +3,7 @@
 #define FIMSRG_UTILITY_PROFILING_INTERNAL_PROFILING_DATABASE_H_
 
 #include <string>
+#include <vector>
 
 #include "absl/container/flat_hash_map.h"
 
@@ -29,6 +30,12 @@ class ProfilingDatabase {
 
   // Write profile report to a specified file.
   void WriteProfileReport(std::string path_to_file) const;
+
+  // Get a vector of profile report strings (sorted by decreasing cost).
+  std::vector<std::string> GenerateProfileReportEntries() const;
+
+  // Get a header for the profiling report.
+  std::string GetProfileReportHeader() const;
 
  private:
   absl::flat_hash_map<std::string, ProfilingData> event_data_;

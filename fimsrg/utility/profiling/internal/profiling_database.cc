@@ -34,11 +34,6 @@ inline std::vector<ProfilingData> SortProfilingData(
   return events;
 }
 
-inline std::string GetProfileReportHeader() {
-  return fmt::format("{:50} {:11} {:11} {:11}\n", "EVENT NAME", "NUM EVENTS",
-                     "WALLTIME(s)", "PER CALL(s)");
-}
-
 inline std::string GetProfileReportString(const ProfilingData& data) {
   double per_call = 0.0;
   if (data.event_count > 0) {
@@ -59,7 +54,7 @@ void ProfilingDatabase::AddProfilingEvent(
 }
 
 void ProfilingDatabase::WriteProfileReport(std::string path_to_file) const {
-  const auto sorted_data = SortProfilingData(event_data_);
+  const auto entries = GenerateProfileReportEntries();
 
   std::ofstream file(path_to_file);
   fimsrg::CheckForError(
@@ -69,9 +64,27 @@ void ProfilingDatabase::WriteProfileReport(std::string path_to_file) const {
               .c_str()));
 
   file << GetProfileReportHeader() << "\n";
-  for (auto it = sorted_data.rbegin(); it != sorted_data.rend(); ++it) {
-    file << GetProfileReportString(*it) << "\n";
+  for (const auto& entry : entries) {
+    file << entry << "\n";
   }
+}
+
+std::vector<std::string> ProfilingDatabase::GenerateProfileReportEntries()
+    const {
+  const auto sorted_data = SortProfilingData(event_data_);
+  std::vector<std::string> entries;
+  entries.reserve(sorted_data.size());
+
+  for (auto it = sorted_data.rbegin(); it != sorted_data.rend(); ++it) {
+    entries.push_back(GetProfileReportString(*it));
+  }
+
+  return entries;
+}
+
+std::string ProfilingDatabase::GetProfileReportHeader() const {
+  return fmt::format("{:50} {:11} {:11} {:11}\n", "EVENT NAME", "NUM EVENTS",
+                     "WALLTIME(s)", "PER CALL(s)");
 }
 
 ProfilingDatabase::ProfilingDatabase() {}
