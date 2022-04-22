@@ -13,4 +13,6 @@ target_link_libraries(
     fermimsrg_memory_internal
     PUBLIC
     absl::flat_hash_map
+    PRIVATE
+    fermimsrg::checks
 )

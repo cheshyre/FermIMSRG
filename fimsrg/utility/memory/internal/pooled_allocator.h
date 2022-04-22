@@ -50,6 +50,9 @@ class PooledAllocatorSingleton {
   // memory_pool_[num_bytes] is a vector of pointers to unused num_bytes-sized
   // buffers.
   absl::flat_hash_map<std::size_t, std::vector<void*>> memory_pool_;
+  // num_buffers_[num_bytes] is the number of unique num_bytes-sized buffers
+  // allocated.
+  absl::flat_hash_map<std::size_t, std::size_t> num_buffers_;
 };
 
 }  // namespace internal

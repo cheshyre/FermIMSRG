@@ -8,6 +8,9 @@
 
 #include "fimsrg/utility/memory/internal/basic_allocator.h"
 
+// PRIVATE
+#include "fimsrg/utility/checks/assert.h"
+
 namespace fimsrg {
 namespace internal {
 
@@ -17,12 +20,20 @@ PooledAllocatorSingleton& PooledAllocatorSingleton::GetInstance() {
 }
 
 void* PooledAllocatorSingleton::BareAllocate(std::size_t num_bytes) {
-  return fimsrg::internal::BareAllocate(num_bytes);
+  auto& buffers = memory_pool_[num_bytes];
+  if (buffers.size() == 0) {
+    num_buffers_[num_bytes] += 1;
+    return fimsrg::internal::BareAllocate(num_bytes);
+  }
+  auto ptr = buffers.back();
+  buffers.pop_back();
+  return ptr;
 }
 
 void PooledAllocatorSingleton::BareDeallocate(void* ptr,
                                               std::size_t num_bytes) {
-  return fimsrg::internal::BareDeallocate(ptr, num_bytes);
+  Expects(memory_pool_[num_bytes].size() < num_buffers_[num_bytes]);
+  memory_pool_[num_bytes].push_back(ptr);
 }
 
 PooledAllocatorSingleton::PooledAllocatorSingleton() {}
