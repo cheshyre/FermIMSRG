@@ -14,13 +14,16 @@
 
 #include "fimsrg/utility/profiling/internal/single_event_profiler.h"
 
-#define ProfileFunction()                                                \
-  const auto prof = fimsrg::internal::MakeSingleEventProfiler(__func__); \
+#define ProfileFunction()                                             \
+  const auto prof =                                                   \
+      fimsrg::internal::SingleEventProfiler::MakeSingleEventProfiler( \
+          __func__);                                                  \
   (void)prof;
 
-#define ProfileFunctionWithSize(x)                                    \
-  const auto prof =                                                   \
-      fimsrg::internal::MakeSingleEventProfilerWithSize(__func__, x); \
+#define ProfileFunctionWithSize(x)                                            \
+  const auto prof =                                                           \
+      fimsrg::internal::SingleEventProfiler::MakeSingleEventProfilerWithSize( \
+          __func__, x);                                                       \
   (void)prof;
 
 #endif  // FIMSRG_UTILITY_PROFILING_FUNCTION_PROFILE_H_
