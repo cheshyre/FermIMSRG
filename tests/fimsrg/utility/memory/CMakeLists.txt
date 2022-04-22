@@ -1,0 +1,12 @@
+add_executable(
+    allocate_test
+    allocate_test.cc
+)
+target_link_libraries(
+    allocate_test
+    fermimsrg::memory
+    Catch2::Catch2WithMain
+)
+catch_discover_tests(
+    allocate_test
+)
