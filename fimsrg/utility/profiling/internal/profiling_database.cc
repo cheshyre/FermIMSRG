@@ -34,11 +34,6 @@ inline std::vector<ProfilingData> SortProfilingData(
   return events;
 }
 
-inline std::string GetProfileReportHeader() {
-  return fmt::format("{:50} {:11} {:11} {:11}\n", "EVENT NAME", "NUM EVENTS",
-                     "WALLTIME(s)", "PER CALL(s)");
-}
-
 inline std::string GetProfileReportString(const ProfilingData& data) {
   double per_call = 0.0;
   if (data.event_count > 0) {
@@ -88,7 +83,8 @@ std::vector<std::string> ProfilingDatabase::GenerateProfileReportEntries()
 }
 
 std::string ProfilingDatabase::GetProfileReportHeader() const {
-  return GetProfileReportHeader();
+  return fmt::format("{:50} {:11} {:11} {:11}\n", "EVENT NAME", "NUM EVENTS",
+                     "WALLTIME(s)", "PER CALL(s)");
 }
 
 ProfilingDatabase::ProfilingDatabase() {}
