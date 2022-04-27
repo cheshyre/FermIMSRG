@@ -14,7 +14,10 @@ namespace internal {
 //
 // Memory is not initialized.
 inline void* BareAlignedUninitializedAllocate(std::size_t num_bytes) {
-  return std::aligned_alloc(fimsrg::internal::min_alignment, num_bytes);
+  // Technically align_alloc without the alignment round up is undefined
+  // behavior.
+  return std::aligned_alloc(fimsrg::internal::min_alignment,
+                            PerformAlignmentRoundUp(num_bytes));
 }
 
 // Allocate an aligned buffer of num_bytes.

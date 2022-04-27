@@ -8,8 +8,7 @@
 namespace fimsrg {
 namespace internal {
 std::size_t BareRoundUpToMultipleOfAlignment(std::size_t num_bytes) {
-  using fimsrg::internal::min_alignment;
-  return ((num_bytes + min_alignment - 1) / min_alignment) * min_alignment;
+  return PerformAlignmentRoundUp(num_bytes);
 }
 }  // namespace internal
 
