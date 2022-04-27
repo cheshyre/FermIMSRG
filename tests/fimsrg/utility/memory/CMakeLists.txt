@@ -10,3 +10,15 @@ target_link_libraries(
 catch_discover_tests(
     allocate_test
 )
+add_executable(
+    alignment_test
+    alignment_test.cc
+)
+target_link_libraries(
+    alignment_test
+    fermimsrg::memory
+    Catch2::Catch2WithMain
+)
+catch_discover_tests(
+    alignment_test
+)
