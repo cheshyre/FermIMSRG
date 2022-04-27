@@ -21,6 +21,10 @@ PooledAllocatorSingleton& PooledAllocatorSingleton::GetInstance() {
 }
 
 void* PooledAllocatorSingleton::BareAlignedAllocate(std::size_t num_bytes) {
+  if (num_bytes == 0) {
+    return nullptr;
+  }
+
   auto& buffers = memory_pool_[num_bytes];
   if (buffers.size() == 0) {
     num_buffers_[num_bytes] += 1;
@@ -34,8 +38,10 @@ void* PooledAllocatorSingleton::BareAlignedAllocate(std::size_t num_bytes) {
 
 void PooledAllocatorSingleton::BareAlignedDeallocate(void* ptr,
                                                      std::size_t num_bytes) {
-  Expects(memory_pool_[num_bytes].size() < num_buffers_[num_bytes]);
-  memory_pool_[num_bytes].push_back(ptr);
+  if (num_bytes != 0) {
+    Expects(memory_pool_[num_bytes].size() < num_buffers_[num_bytes]);
+    memory_pool_[num_bytes].push_back(ptr);
+  }
 }
 
 PooledAllocatorSingleton::PooledAllocatorSingleton() {}
