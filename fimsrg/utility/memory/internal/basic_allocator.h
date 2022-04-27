@@ -13,21 +13,21 @@ namespace internal {
 // Allocate an aligned buffer of (at least) num_bytes.
 //
 // Memory is not initialized.
-inline void* BareUninitializedAllocate(std::size_t num_bytes) {
+inline void* BareAlignedUninitializedAllocate(std::size_t num_bytes) {
   return std::aligned_alloc(fimsrg::internal::min_alignment, num_bytes);
 }
 
 // Allocate an aligned buffer of num_bytes.
 //
 // Memory is initialized to 0.
-inline void* BareAllocate(std::size_t num_bytes) {
-  void* ptr = fimsrg::internal::BareUninitializedAllocate(num_bytes);
+inline void* BareAlignedAllocate(std::size_t num_bytes) {
+  void* ptr = fimsrg::internal::BareAlignedUninitializedAllocate(num_bytes);
   std::memset(ptr, 0, num_bytes);
   return ptr;
 }
 
 // Free a previously allocated buffer at ptr of num_bytes.
-inline void BareDeallocate(void* ptr, std::size_t num_bytes) {
+inline void BareAlignedDeallocate(void* ptr, std::size_t num_bytes) {
   (void)num_bytes;
   std::free(ptr);
 }

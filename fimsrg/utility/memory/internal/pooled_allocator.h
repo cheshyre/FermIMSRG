@@ -35,10 +35,10 @@ class PooledAllocatorSingleton {
   void operator=(PooledAllocatorSingleton&&) = delete;
 
   // Allocate a buffer of num_bytes.
-  void* BareAllocate(std::size_t num_bytes);
+  void* BareAlignedAllocate(std::size_t num_bytes);
 
   // Free a previously allocated buffer at ptr of num_bytes.
-  void BareDeallocate(void* ptr, std::size_t num_bytes);
+  void BareAlignedDeallocate(void* ptr, std::size_t num_bytes);
 
  private:
   // Default constructor.

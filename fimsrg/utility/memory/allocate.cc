@@ -15,24 +15,24 @@ namespace fimsrg {
 namespace detail {
 void* BareAllocate(std::size_t num_bytes) {
   ProfileFunctionWithSize(num_bytes);
-  return fimsrg::internal::BareAllocate(num_bytes);
+  return fimsrg::internal::BareAlignedAllocate(num_bytes);
 }
 
 void BareDeallocate(void* ptr, std::size_t num_bytes) {
   ProfileFunctionWithSize(num_bytes);
-  fimsrg::internal::BareDeallocate(ptr, num_bytes);
+  fimsrg::internal::BareAlignedDeallocate(ptr, num_bytes);
 }
 
 void* BarePooledAllocate(std::size_t num_bytes) {
   ProfileFunctionWithSize(num_bytes);
   auto& memory_pool = fimsrg::internal::PooledAllocatorSingleton::GetInstance();
-  return memory_pool.BareAllocate(num_bytes);
+  return memory_pool.BareAlignedAllocate(num_bytes);
 }
 
 void BarePooledDeallocate(void* ptr, std::size_t num_bytes) {
   ProfileFunctionWithSize(num_bytes);
   auto& memory_pool = fimsrg::internal::PooledAllocatorSingleton::GetInstance();
-  memory_pool.BareDeallocate(ptr, num_bytes);
+  memory_pool.BareAlignedDeallocate(ptr, num_bytes);
 }
 
 }  // namespace detail
