@@ -20,10 +20,20 @@
           __func__);                                                  \
   (void)prof;
 
+#define ProfileFunctionWithPrefix(x)                        \
+  const auto prof = fimsrg::internal::SingleEventProfiler:: \
+      MakeSingleEventProfilerWithPrefix(__func__, x);       \
+  (void)prof;
+
 #define ProfileFunctionWithSize(x)                                            \
   const auto prof =                                                           \
       fimsrg::internal::SingleEventProfiler::MakeSingleEventProfilerWithSize( \
           __func__, x);                                                       \
+  (void)prof;
+
+#define ProfileFunctionWithPrefixAndSize(x, y)                  \
+  const auto prof = fimsrg::internal::SingleEventProfiler::     \
+      MakeSingleEventProfilerWithPrefixAndSize(__func__, x, y); \
   (void)prof;
 
 #endif  // FIMSRG_UTILITY_PROFILING_FUNCTION_PROFILE_H_
