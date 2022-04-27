@@ -5,14 +5,14 @@
 #include <cstdlib>
 
 namespace fimsrg {
-namespace detail {
+namespace internal {
 
 // Rounds up a number of bytes to be a multiple of alignment.
 //
 // Prefer calling RoundUpToMultipleOfAlignment<T>(num_elems).
 std::size_t BareRoundUpToMultipleOfAlignment(std::size_t num_bytes);
 
-}  // namespace detail
+}  // namespace internal
 
 // Rounds up a number of elements of type T to correspond
 // to a multiple of alignment in memory.
@@ -20,8 +20,8 @@ std::size_t BareRoundUpToMultipleOfAlignment(std::size_t num_bytes);
 // NOTE THAT THIS IS A NUMBER OF ELEMENTS, NOT A NUMBER OF BYTES.
 template <typename T>
 std::size_t RoundUpToMultipleOfAlignment(std::size_t num_elems) {
-  return fimsrg::detail::BareRoundUpToMultipleOfAlignment(num_elems *
-                                                          sizeof(T)) /
+  return fimsrg::internal::BareRoundUpToMultipleOfAlignment(num_elems *
+                                                            sizeof(T)) /
          sizeof(T);
 }
 

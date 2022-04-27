@@ -12,7 +12,7 @@
 
 namespace fimsrg {
 
-namespace detail {
+namespace internal {
 void* BareAllocate(std::size_t num_bytes) {
   ProfileFunctionWithSize(num_bytes);
   return fimsrg::internal::BareAlignedAllocate(num_bytes);
@@ -35,5 +35,5 @@ void BarePooledDeallocate(void* ptr, std::size_t num_bytes) {
   memory_pool.BareAlignedDeallocate(ptr, num_bytes);
 }
 
-}  // namespace detail
+}  // namespace internal
 }  // namespace fimsrg

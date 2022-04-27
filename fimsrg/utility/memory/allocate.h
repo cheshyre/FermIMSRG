@@ -6,7 +6,7 @@
 
 namespace fimsrg {
 
-namespace detail {
+namespace internal {
 // Get a buffer of num_bytes.
 //
 // Prefer template function T* Allocate<T>.
@@ -26,31 +26,31 @@ void* BarePooledAllocate(std::size_t num_bytes);
 //
 // Prefer template function PooledDeallocate<T>.
 void BarePooledDeallocate(void* ptr, std::size_t num_bytes);
-}  // namespace detail
+}  // namespace internal
 
 // Allocate a buffer for num_elems elements of type T.
 template <typename T>
 T* Allocate(std::size_t num_elems) {
-  return static_cast<T*>(fimsrg::detail::BareAllocate(num_elems * sizeof(T)));
+  return static_cast<T*>(fimsrg::internal::BareAllocate(num_elems * sizeof(T)));
 }
 
 // Free a buffer for num_elems elements of type T.
 template <typename T>
 void Deallocate(T* ptr, std::size_t num_elems) {
-  fimsrg::detail::BareDeallocate(ptr, num_elems * sizeof(T));
+  fimsrg::internal::BareDeallocate(ptr, num_elems * sizeof(T));
 }
 
 // Allocate a buffer for num_elems elements of type T.
 template <typename T>
 T* PooledAllocate(std::size_t num_elems) {
   return static_cast<T*>(
-      fimsrg::detail::BarePooledAllocate(num_elems * sizeof(T)));
+      fimsrg::internal::BarePooledAllocate(num_elems * sizeof(T)));
 }
 
 // Free a buffer for num_elems elements of type T.
 template <typename T>
 void PooledDeallocate(T* ptr, std::size_t num_elems) {
-  fimsrg::detail::BarePooledDeallocate(ptr, num_elems * sizeof(T));
+  fimsrg::internal::BarePooledDeallocate(ptr, num_elems * sizeof(T));
 }
 
 }  // namespace fimsrg
