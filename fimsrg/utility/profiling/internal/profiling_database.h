@@ -31,7 +31,7 @@ class ProfilingDatabase {
   // Write profile report to a specified file.
   void WriteProfileReport(std::string path_to_file) const;
 
-  // Get a vector of profile report strings (sorted by decreasing cost).
+  // Get a vector of profile report strings (sorted by decreasing wall time).
   std::vector<std::string> GenerateProfileReportEntries() const;
 
   // Get a header for the profiling report.
