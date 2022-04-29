@@ -6,11 +6,6 @@
 #include <string_view>
 #include <utility>
 
-#include "fimsrg/utility/checks/internal/error_eval.h"
-
-#define ErrorMessage(x) \
-  fimsrg::internal::GenerateFullErrorMessage(__FILE__, __LINE__, x)
-
 namespace fimsrg {
 
 // Return value of a validation function.
@@ -32,13 +27,13 @@ inline void swap(ValidationResult& a, ValidationResult& b) noexcept {
 //
 // If in error state (error_state == true),
 // the error message will be logged and a fatal exception will be raised.
-void CheckForError(bool error_state, std::string_view msg);
+void CheckForErrorState(bool error_state, std::string_view msg);
 
 // Check for error in validation result.
 //
 // If it is invalid (validation_result.valid == false),
 // the error message will be logged and a fatal exception will be raised.
-void CheckForError(const ValidationResult& validation_result);
+void CheckValidationResult(const ValidationResult& validation_result);
 
 }  // namespace fimsrg
 
