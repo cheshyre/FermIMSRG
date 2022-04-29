@@ -11,7 +11,7 @@ void CheckForErrorState(bool error_state, std::string_view msg) {
   fimsrg::internal::CheckForError(error_state, msg);
 }
 
-void CheckForError(const ValidationResult& validation_result) {
+void CheckValidationResult(const ValidationResult& validation_result) {
   fimsrg::internal::CheckForError(!validation_result.valid,
                                   validation_result.err_msg);
 }

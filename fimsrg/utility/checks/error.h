@@ -33,7 +33,7 @@ void CheckForErrorState(bool error_state, std::string_view msg);
 //
 // If it is invalid (validation_result.valid == false),
 // the error message will be logged and a fatal exception will be raised.
-void CheckForError(const ValidationResult& validation_result);
+void CheckValidationResult(const ValidationResult& validation_result);
 
 }  // namespace fimsrg
 
