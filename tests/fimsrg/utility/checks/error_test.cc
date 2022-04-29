@@ -20,13 +20,15 @@ TEST_CASE("Test CheckForError() on valid cases.") {
         fimsrg::ValidationResult{1.0 > 0.5, ErrorMessage("Valid case 4")}));
   }
   SECTION("using bool, string_view") {
-    REQUIRE_NOTHROW(fimsrg::CheckForError(0 > 1, ErrorMessage("Valid case 1")));
     REQUIRE_NOTHROW(
-        fimsrg::CheckForError(std::string("asdf") == std::string("qwerty"),
-                              ErrorMessage("Valid case 2")));
-    REQUIRE_NOTHROW(fimsrg::CheckForError(false, ErrorMessage("Valid case 3")));
+        fimsrg::CheckForErrorState(0 > 1, ErrorMessage("Valid case 1")));
     REQUIRE_NOTHROW(
-        fimsrg::CheckForError(1.0 < 0.5, ErrorMessage("Valid case 4")));
+        fimsrg::CheckForErrorState(std::string("asdf") == std::string("qwerty"),
+                                   ErrorMessage("Valid case 2")));
+    REQUIRE_NOTHROW(
+        fimsrg::CheckForErrorState(false, ErrorMessage("Valid case 3")));
+    REQUIRE_NOTHROW(
+        fimsrg::CheckForErrorState(1.0 < 0.5, ErrorMessage("Valid case 4")));
   }
 }
 
@@ -44,12 +46,13 @@ TEST_CASE("Test CheckForError() on invalid cases.") {
   }
   SECTION("using using bool, string_view") {
     REQUIRE_THROWS(
-        fimsrg::CheckForError(0 < 1, ErrorMessage("Invalid case 1")));
+        fimsrg::CheckForErrorState(0 < 1, ErrorMessage("Invalid case 1")));
     REQUIRE_THROWS(
-        fimsrg::CheckForError(std::string("asdf") != std::string("qwerty"),
-                              ErrorMessage("Invalid case 2")));
-    REQUIRE_THROWS(fimsrg::CheckForError(true, ErrorMessage("Invalid case 3")));
+        fimsrg::CheckForErrorState(std::string("asdf") != std::string("qwerty"),
+                                   ErrorMessage("Invalid case 2")));
     REQUIRE_THROWS(
-        fimsrg::CheckForError(1.0 > 0.5, ErrorMessage("Invalid case 4")));
+        fimsrg::CheckForErrorState(true, ErrorMessage("Invalid case 3")));
+    REQUIRE_THROWS(
+        fimsrg::CheckForErrorState(1.0 > 0.5, ErrorMessage("Invalid case 4")));
   }
 }

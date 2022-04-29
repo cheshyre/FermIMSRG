@@ -7,7 +7,7 @@
 
 namespace fimsrg {
 
-void CheckForError(bool error_state, std::string_view msg) {
+void CheckForErrorState(bool error_state, std::string_view msg) {
   fimsrg::internal::CheckForError(error_state, msg);
 }
 

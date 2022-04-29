@@ -27,7 +27,7 @@ inline void swap(ValidationResult& a, ValidationResult& b) noexcept {
 //
 // If in error state (error_state == true),
 // the error message will be logged and a fatal exception will be raised.
-void CheckForError(bool error_state, std::string_view msg);
+void CheckForErrorState(bool error_state, std::string_view msg);
 
 // Check for error in validation result.
 //

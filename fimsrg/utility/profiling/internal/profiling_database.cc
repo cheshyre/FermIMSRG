@@ -58,7 +58,7 @@ void ProfilingDatabase::WriteProfileReport(std::string path_to_file) const {
   const auto entries = GenerateProfileReportEntries();
 
   std::ofstream file(path_to_file);
-  fimsrg::CheckForError(
+  fimsrg::CheckForErrorState(
       !file.is_open(),
       ErrorMessage(
           fmt::format("Failed to open profile report file at {}", path_to_file)
