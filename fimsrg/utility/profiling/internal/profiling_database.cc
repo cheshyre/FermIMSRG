@@ -16,6 +16,7 @@
 
 // PRIVATE
 #include "fimsrg/utility/checks/error.h"
+#include "fimsrg/utility/checks/error_msg.h"
 
 namespace fimsrg {
 namespace internal {

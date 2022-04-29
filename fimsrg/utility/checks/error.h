@@ -6,11 +6,6 @@
 #include <string_view>
 #include <utility>
 
-#include "fimsrg/utility/checks/internal/error_eval.h"
-
-#define ErrorMessage(x) \
-  fimsrg::internal::GenerateFullErrorMessage(__FILE__, __LINE__, x)
-
 namespace fimsrg {
 
 // Return value of a validation function.

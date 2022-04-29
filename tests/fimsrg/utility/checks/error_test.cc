@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "fimsrg/utility/checks/error_msg.h"
+
 #include "catch2/catch.hpp"
 
 TEST_CASE("Test CheckForError() on valid cases.") {
