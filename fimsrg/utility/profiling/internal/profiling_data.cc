@@ -20,9 +20,5 @@ void ProfilingData::AddProfilingEvent(const ProfilingEventData& event_data) {
   this->wall_time += event_data.wall_time;
 }
 
-bool operator<(const ProfilingData& a, const ProfilingData& b) {
-  return a.wall_time < b.wall_time;
-}
-
 }  // namespace internal
 }  // namespace fimsrg

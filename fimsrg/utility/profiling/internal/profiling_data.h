@@ -33,11 +33,6 @@ inline void swap(ProfilingData& a, ProfilingData& b) noexcept {
   swap(a.wall_time, b.wall_time);
 }
 
-// Determine whether profiiling data a is less expensive than b.
-//
-// Gives a total ordering to profiling data for reports.
-bool operator<(const ProfilingData& a, const ProfilingData& b);
-
 }  // namespace internal
 }  // namespace fimsrg
 
