@@ -20,11 +20,15 @@ PooledAllocatorSingleton& PooledAllocatorSingleton::GetInstance() {
   return instance;
 }
 
-void* PooledAllocatorSingleton::BareAllocate(std::size_t num_bytes) {
+void* PooledAllocatorSingleton::BareAlignedAllocate(std::size_t num_bytes) {
+  if (num_bytes == 0) {
+    return nullptr;
+  }
+
   auto& buffers = memory_pool_[num_bytes];
   if (buffers.size() == 0) {
     num_buffers_[num_bytes] += 1;
-    return fimsrg::internal::BareAllocate(num_bytes);
+    return fimsrg::internal::BareAlignedAllocate(num_bytes);
   }
   auto ptr = buffers.back();
   buffers.pop_back();
@@ -32,10 +36,12 @@ void* PooledAllocatorSingleton::BareAllocate(std::size_t num_bytes) {
   return ptr;
 }
 
-void PooledAllocatorSingleton::BareDeallocate(void* ptr,
-                                              std::size_t num_bytes) {
-  Expects(memory_pool_[num_bytes].size() < num_buffers_[num_bytes]);
-  memory_pool_[num_bytes].push_back(ptr);
+void PooledAllocatorSingleton::BareAlignedDeallocate(void* ptr,
+                                                     std::size_t num_bytes) {
+  if (num_bytes != 0) {
+    Expects(memory_pool_[num_bytes].size() < num_buffers_[num_bytes]);
+    memory_pool_[num_bytes].push_back(ptr);
+  }
 }
 
 PooledAllocatorSingleton::PooledAllocatorSingleton() {}
@@ -43,7 +49,7 @@ PooledAllocatorSingleton::PooledAllocatorSingleton() {}
 PooledAllocatorSingleton::~PooledAllocatorSingleton() {
   for (const auto& [size, buffers] : memory_pool_) {
     for (const auto& buffer_ptr : buffers) {
-      fimsrg::internal::BareDeallocate(buffer_ptr, size);
+      fimsrg::internal::BareAlignedDeallocate(buffer_ptr, size);
     }
   }
 }

@@ -3,6 +3,7 @@ add_subdirectory(internal)
 add_library(
     fermimsrg_memory
     allocate.h allocate.cc
+    alignment.h alignment.cc
 )
 add_library(fermimsrg::memory ALIAS fermimsrg_memory)
 target_include_directories(

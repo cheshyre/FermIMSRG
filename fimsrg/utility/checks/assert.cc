@@ -3,6 +3,6 @@
 
 namespace fimsrg {
 
-bool RuntimeChecksEnabled() { return fimsrg::detail::kRuntimeChecksEnabled; }
+bool RuntimeChecksEnabled() { return fimsrg::internal::kRuntimeChecksEnabled; }
 
 }  // namespace fimsrg

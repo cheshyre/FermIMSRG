@@ -16,9 +16,25 @@ class SingleEventProfiler {
   static std::unique_ptr<SingleEventProfiler> MakeSingleEventProfiler(
       std::string event_name);
 
+  // Create a unique single event profiler for a given event with a specified
+  // prefix.
+  //
+  // This is used to resolve between different overloads.
+  static std::unique_ptr<SingleEventProfiler> MakeSingleEventProfilerWithPrefix(
+      std::string event_name, std::string prefix);
+
   // Create a unique single event profiler for an event with a specified size.
   static std::unique_ptr<SingleEventProfiler> MakeSingleEventProfilerWithSize(
       std::string event_name, std::size_t size);
+
+  // Create a unique single event profiler for an event with a specified prefix
+  // and a specified size.
+  //
+  // This is used to resolve between different overloads.
+  static std::unique_ptr<SingleEventProfiler>
+  MakeSingleEventProfilerWithPrefixAndSize(std::string event_name,
+                                           std::string prefix,
+                                           std::size_t size);
 
   // Constructor.
   //

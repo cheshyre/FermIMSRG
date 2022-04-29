@@ -21,10 +21,24 @@ SingleEventProfiler::MakeSingleEventProfiler(std::string event_name) {
 }
 
 std::unique_ptr<SingleEventProfiler>
+SingleEventProfiler::MakeSingleEventProfilerWithPrefix(std::string event_name,
+                                                       std::string prefix) {
+  return std::make_unique<SingleEventProfiler>(
+      absl::StrCat(event_name, ", prefix = ", prefix));
+}
+
+std::unique_ptr<SingleEventProfiler>
 SingleEventProfiler::MakeSingleEventProfilerWithSize(std::string event_name,
                                                      std::size_t size) {
   return std::make_unique<SingleEventProfiler>(
       absl::StrCat(event_name, ", size = ", std::to_string(size)));
+}
+
+std::unique_ptr<SingleEventProfiler>
+SingleEventProfiler::MakeSingleEventProfilerWithPrefixAndSize(
+    std::string event_name, std::string prefix, std::size_t size) {
+  return std::make_unique<SingleEventProfiler>(absl::StrCat(
+      event_name, ", prefix = ", prefix, ", size = ", std::to_string(size)));
 }
 
 SingleEventProfiler::SingleEventProfiler(std::string event_name)
