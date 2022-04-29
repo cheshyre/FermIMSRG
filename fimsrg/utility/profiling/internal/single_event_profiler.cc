@@ -1,6 +1,7 @@
 // Copyright 2022 Matthias Heinz
 #include "fimsrg/utility/profiling/internal/single_event_profiler.h"
 
+#include <cstdint>
 #include <cstdlib>
 #include <memory>
 #include <string>
@@ -45,7 +46,7 @@ SingleEventProfiler::SingleEventProfiler(std::string event_name)
     : event_name_(event_name), start_time_ns_(absl::GetCurrentTimeNanos()) {}
 
 SingleEventProfiler::~SingleEventProfiler() {
-  const auto end_time_ns = absl::GetCurrentTimeNanos();
+  const std::int64_t end_time_ns = absl::GetCurrentTimeNanos();
   auto& prof_db = ProfilingDatabase::GetInstance();
   double elapsed_time_s = (end_time_ns - start_time_ns_) / 1e9;
   prof_db.AddProfilingEvent({event_name_, elapsed_time_s});
