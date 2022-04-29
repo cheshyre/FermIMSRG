@@ -30,7 +30,10 @@ inline std::vector<ProfilingData> SortProfilingData(
     events.push_back(i.second);
   }
 
-  std::sort(events.begin(), events.end());
+  std::sort(events.begin(), events.end(),
+            [](const ProfilingData& a, const ProfilingData& b) {
+              return a.wall_time < b.wall_time;
+            });
 
   return events;
 }

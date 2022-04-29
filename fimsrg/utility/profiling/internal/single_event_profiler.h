@@ -10,6 +10,12 @@
 namespace fimsrg {
 namespace internal {
 
+// Class to automatically profile a function via the RAII principle.
+//
+// Construction of a SingleEventProfiler via a factory method
+// marks the start of the profiling event.
+// Upon destruction at the end of the context,
+// the profiler will report back to the profiling database.
 class SingleEventProfiler {
  public:
   // Create a unique single event profiler for a given event.
