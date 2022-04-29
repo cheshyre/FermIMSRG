@@ -25,12 +25,12 @@ void* PooledAllocatorSingleton::BareAlignedAllocate(std::size_t num_bytes) {
     return nullptr;
   }
 
-  auto& buffers = memory_pool_[num_bytes];
+  std::vector<void*>& buffers = memory_pool_[num_bytes];
   if (buffers.size() == 0) {
     num_buffers_[num_bytes] += 1;
     return fimsrg::internal::BareAlignedAllocate(num_bytes);
   }
-  auto ptr = buffers.back();
+  void* ptr = buffers.back();
   buffers.pop_back();
   std::memset(ptr, 0, num_bytes);
   return ptr;
