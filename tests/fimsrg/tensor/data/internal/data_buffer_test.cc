@@ -154,6 +154,44 @@ TEST_CASE("Test move constructor (nonempty).") {
   }
 }
 
+TEST_CASE("Test copy assignment (empty).") {
+  DataBuffer empty;
+
+  DataBuffer empty_copy;
+
+  REQUIRE(empty_copy.size() == 0);
+  REQUIRE(empty_copy.data() == nullptr);
+
+  empty_copy = empty;
+
+  REQUIRE(empty_copy.size() == 0);
+  REQUIRE(empty_copy.data() == nullptr);
+}
+
+TEST_CASE("Test copy assignment (nonempty).") {
+  REQUIRE(std::is_copy_assignable_v<DataBuffer>);
+
+  for (const std::vector<double>& ref_data :
+       {DataVector1(), DataVector2(), DataVector3()}) {
+    DataBuffer orig = DataBufferFromDataVector((ref_data));
+    DataBuffer copy;
+
+    REQUIRE(copy.size() == 0);
+    REQUIRE(copy.data() == nullptr);
+
+    copy = orig;
+
+    // Same size
+    REQUIRE(copy.size() == orig.size());
+    // But new buffer
+    REQUIRE(copy.data() != orig.data());
+    // With same data
+    for (std::size_t i = 0; i < copy.size(); i += 1) {
+      REQUIRE(copy.at(i) == orig.at(i));
+    }
+  }
+}
+
 TEST_CASE("Test at() (setter and getter) on nonconst.") {
   for (const std::vector<double>& ref_data :
        {DataVector1(), DataVector2(), DataVector3()}) {
