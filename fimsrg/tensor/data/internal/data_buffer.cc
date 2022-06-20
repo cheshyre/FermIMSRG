@@ -43,8 +43,7 @@ DataBuffer& DataBuffer::operator=(const DataBuffer& other) {
 }
 
 DataBuffer& DataBuffer::operator=(DataBuffer&& other) noexcept {
-  // TODO(mheinz): implement
-  (void)other;
+  swap(other);
 
   return *this;
 }
