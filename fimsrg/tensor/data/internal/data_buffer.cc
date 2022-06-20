@@ -3,14 +3,15 @@
 
 #include <cstddef>
 
+#include "fimsrg/utility/memory/allocate.h"
+
 namespace fimsrg {
 namespace internal {
 DataBuffer::DataBuffer() {}
 
-DataBuffer::DataBuffer(std::size_t num_elems) : DataBuffer() {
-  // TODO(mheinz): implement
-  (void)num_elems;
-}
+DataBuffer::DataBuffer(std::size_t num_elems)
+    : num_elems_(num_elems),
+      data_ptr_(fimsrg::PooledAllocate<double>(num_elems_)) {}
 
 DataBuffer::DataBuffer(const DataBuffer& other) : DataBuffer() {
   // TODO(mheinz): implement
@@ -22,7 +23,7 @@ DataBuffer::DataBuffer(DataBuffer&& other) : DataBuffer() {
   (void)other;
 }
 
-DataBuffer::~DataBuffer() {}
+DataBuffer::~DataBuffer() { fimsrg::PooledDeallocate(data_ptr_, num_elems_); }
 
 DataBuffer& DataBuffer::operator=(const DataBuffer& other) {
   // TODO(mheinz): implement

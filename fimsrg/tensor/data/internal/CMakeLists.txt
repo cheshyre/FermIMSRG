@@ -7,3 +7,8 @@ target_include_directories(
   PUBLIC
   ${FIMSRG_ROOT_DIR}
 )
+target_link_libraries(
+  fermimsrg_tensor_data_internal
+  PRIVATE
+  fermimsrg::memory
+)
