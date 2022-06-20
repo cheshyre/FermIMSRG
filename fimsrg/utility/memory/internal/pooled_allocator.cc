@@ -3,8 +3,10 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <utility>
 #include <vector>
 
+// IWYU pragma: no_include "absl/hash/hash.h"
 #include "absl/container/flat_hash_map.h"
 
 #include "fimsrg/utility/memory/internal/basic_allocator.h"
