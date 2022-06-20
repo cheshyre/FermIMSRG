@@ -25,20 +25,20 @@
 #endif
 
 #define Expects(x)                                                  \
-  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {            \
+  if constexpr (fimsrg::internal::kRuntimeChecksEnabled) {          \
     fimsrg::internal::CheckPrecondition(x, __FILE__, __LINE__, #x); \
   }
 #define Assert(x)                                                \
-  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {         \
+  if constexpr (fimsrg::internal::kRuntimeChecksEnabled) {       \
     fimsrg::internal::CheckAssertion(x, __FILE__, __LINE__, #x); \
   }
 #define Ensures(x)                                                   \
-  if constexpr (fimsrg::detail::kRuntimeChecksEnabled) {             \
+  if constexpr (fimsrg::internal::kRuntimeChecksEnabled) {           \
     fimsrg::internal::CheckPostcondition(x, __FILE__, __LINE__, #x); \
   }
 
 namespace fimsrg {
-namespace detail {
+namespace internal {
 
 #if FIMSRG_RUNTIME_CHECKS_ENABLED
 constexpr bool kRuntimeChecksEnabled = true;
@@ -46,7 +46,7 @@ constexpr bool kRuntimeChecksEnabled = true;
 constexpr bool kRuntimeChecksEnabled = false;
 #endif
 
-}  // namespace detail
+}  // namespace internal
 
 // Check whether runtime checks are enabled.
 bool RuntimeChecksEnabled();

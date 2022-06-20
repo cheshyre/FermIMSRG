@@ -10,15 +10,37 @@
 namespace fimsrg {
 namespace internal {
 
+// Class to automatically profile a function via the RAII principle.
+//
+// Construction of a SingleEventProfiler via a factory method
+// marks the start of the profiling event.
+// Upon destruction at the end of the context,
+// the profiler will report back to the profiling database.
 class SingleEventProfiler {
  public:
   // Create a unique single event profiler for a given event.
   static std::unique_ptr<SingleEventProfiler> MakeSingleEventProfiler(
       std::string event_name);
 
+  // Create a unique single event profiler for a given event with a specified
+  // prefix.
+  //
+  // This is used to resolve between different overloads.
+  static std::unique_ptr<SingleEventProfiler> MakeSingleEventProfilerWithPrefix(
+      std::string event_name, std::string prefix);
+
   // Create a unique single event profiler for an event with a specified size.
   static std::unique_ptr<SingleEventProfiler> MakeSingleEventProfilerWithSize(
       std::string event_name, std::size_t size);
+
+  // Create a unique single event profiler for an event with a specified prefix
+  // and a specified size.
+  //
+  // This is used to resolve between different overloads.
+  static std::unique_ptr<SingleEventProfiler>
+  MakeSingleEventProfilerWithPrefixAndSize(std::string event_name,
+                                           std::string prefix,
+                                           std::size_t size);
 
   // Constructor.
   //

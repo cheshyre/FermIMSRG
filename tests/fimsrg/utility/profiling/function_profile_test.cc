@@ -15,13 +15,25 @@ static int TimesTen(int val) {
   return val * 10;
 }
 
+static int Four() {
+  ProfileFunctionWithPrefix("four");
+  return 4;
+}
+
+static int TimesOneHundred(int val) {
+  ProfileFunctionWithPrefixAndSize("100x", val);
+  return val * 100;
+}
+
 TEST_CASE("Test profiling two functions gives two profile entries.") {
   int val = 0;
 
   val += One();
   val += TimesTen(100);
+  val += Four();
+  val += TimesOneHundred(1);
 
-  REQUIRE(val == 1001);
+  REQUIRE(val == 1105);
   const auto entries = fimsrg::GetProfileReportEntries();
-  REQUIRE(entries.size() == 2);
+  REQUIRE(entries.size() == 4);
 }
