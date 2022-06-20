@@ -29,8 +29,15 @@ DataBuffer::DataBuffer(DataBuffer&& other) noexcept : DataBuffer() {
 DataBuffer::~DataBuffer() { fimsrg::PooledDeallocate(data_ptr_, num_elems_); }
 
 DataBuffer& DataBuffer::operator=(const DataBuffer& other) {
-  // TODO(mheinz): implement
-  (void)other;
+  // Suboptimal implementation due to reallocation
+  // despite perhaps not needing it
+
+  // Free currently allocated memory
+  fimsrg::PooledDeallocate(data_ptr_, num_elems_);
+
+  // Copy from other
+  num_elems_ = other.size();
+  data_ptr_ = AllocateAndCopyBuffer(other.data(), other.size());
 
   return *this;
 }
