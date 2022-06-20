@@ -25,6 +25,17 @@ inline std::vector<double> DataVector3() {
           43867.0 / 798, 0.0,  -174611.0 / 330};
 }
 
+inline DataBuffer DataBufferFromDataVector(
+    const std::vector<double>& data_vec) {
+  DataBuffer buf(data_vec.size());
+
+  for (std::size_t i = 0; i < buf.size(); i += 1) {
+    buf.at(i) = data_vec[i];
+  }
+
+  return buf;
+}
+
 TEST_CASE("Test default constructor.") {
   DataBuffer data_buffer;
 
@@ -73,6 +84,32 @@ TEST_CASE("Test standard constructor and data() for empty.") {
     DataBuffer data_buffer(size);
 
     REQUIRE(data_buffer.data() == nullptr);
+  }
+}
+
+TEST_CASE("Test copy constructor (empty).") {
+  DataBuffer empty;
+
+  DataBuffer empty_copy(empty);
+
+  REQUIRE(empty_copy.size() == 0);
+  REQUIRE(empty_copy.data() == nullptr);
+}
+
+TEST_CASE("Test copy constructor (nonempty).") {
+  for (const std::vector<double>& ref_data :
+       {DataVector1(), DataVector2(), DataVector3()}) {
+    DataBuffer orig = DataBufferFromDataVector((ref_data));
+    DataBuffer copy(orig);
+
+    // Same size
+    REQUIRE(copy.size() == orig.size());
+    // But new buffer
+    REQUIRE(copy.data() != orig.data());
+    // With same data
+    for (std::size_t i = 0; i < copy.size(); i += 1) {
+      REQUIRE(copy.at(i) == orig.at(i));
+    }
   }
 }
 
