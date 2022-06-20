@@ -3,6 +3,7 @@
 
 #include <cstddef>
 
+#include "fimsrg/utility/checks/assert.h"
 #include "fimsrg/utility/memory/allocate.h"
 
 namespace fimsrg {
@@ -40,15 +41,13 @@ DataBuffer& DataBuffer::operator=(DataBuffer&& other) {
 }
 
 double DataBuffer::at(std::size_t index) const {
-  // TODO(mheinz): implement
-  (void)index;
-  return data_ptr_[0];
+  Expects(index < size());
+  return data_ptr_[index];
 }
 
 double& DataBuffer::at(std::size_t index) {
-  // TODO(mheinz): implement
-  (void)index;
-  return data_ptr_[0];
+  Expects(index < size());
+  return data_ptr_[index];
 }
 }  // namespace internal
 }  // namespace fimsrg

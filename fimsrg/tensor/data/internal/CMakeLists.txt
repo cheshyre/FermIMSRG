@@ -11,4 +11,5 @@ target_link_libraries(
   fermimsrg_tensor_data_internal
   PRIVATE
   fermimsrg::memory
+  fermimsrg::checks
 )
