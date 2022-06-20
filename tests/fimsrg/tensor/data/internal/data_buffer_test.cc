@@ -192,6 +192,52 @@ TEST_CASE("Test copy assignment (nonempty).") {
   }
 }
 
+TEST_CASE("Test move assignment (empty).") {
+  DataBuffer empty;
+
+  DataBuffer empty_copy;
+
+  REQUIRE(empty_copy.size() == 0);
+  REQUIRE(empty_copy.data() == nullptr);
+
+  empty_copy = std::move(empty);
+
+  REQUIRE(empty_copy.size() == 0);
+  REQUIRE(empty_copy.data() == nullptr);
+}
+
+TEST_CASE("Test move assignment (nonempty).") {
+  REQUIRE(std::is_nothrow_move_assignable_v<DataBuffer>);
+
+  for (const std::vector<double>& ref_data :
+       {DataVector1(), DataVector2(), DataVector3()}) {
+    DataBuffer orig = DataBufferFromDataVector((ref_data));
+
+    // Save relevant members because orig will be modified by move
+    std::size_t orig_size = orig.size();
+    double* orig_data_ptr = orig.data();
+
+    DataBuffer copy;
+
+    REQUIRE(copy.size() == 0);
+    REQUIRE(copy.data() == nullptr);
+
+    copy = std::move(orig);
+
+    // Same size
+    REQUIRE(copy.size() == orig_size);
+    // And same buffer
+    REQUIRE(copy.data() == orig_data_ptr);
+    // With same data
+    for (std::size_t i = 0; i < copy.size(); i += 1) {
+      REQUIRE(copy.at(i) == ref_data[i]);
+    }
+
+    // Orig should not have the pointer to the buffer
+    REQUIRE(orig.data() != orig_data_ptr);
+  }
+}
+
 TEST_CASE("Test at() (setter and getter) on nonconst.") {
   for (const std::vector<double>& ref_data :
        {DataVector1(), DataVector2(), DataVector3()}) {
