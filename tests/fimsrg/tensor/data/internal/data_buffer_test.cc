@@ -24,6 +24,26 @@ TEST_CASE("Test standard constructor and size().") {
   }
 }
 
+TEST_CASE("Test standard constructor and at() for const buffer.") {
+  for (const std::size_t size : {0, 1, 2, 3, 4, 8, 24, 64, 1000}) {
+    const DataBuffer data_buffer(size);
+
+    for (std::size_t index = 0; index < size; index += 1) {
+      REQUIRE(data_buffer.at(index) == 0.0);
+    }
+  }
+}
+
+TEST_CASE("Test standard constructor and at() for nonconst buffer.") {
+  for (const std::size_t size : {0, 1, 2, 3, 4, 8, 24, 64, 1000}) {
+    DataBuffer data_buffer(size);
+
+    for (std::size_t index = 0; index < size; index += 1) {
+      REQUIRE(data_buffer.at(index) == 0.0);
+    }
+  }
+}
+
 TEST_CASE("Test standard constructor and data() for nonempty.") {
   for (const std::size_t size : {1, 2, 3, 4, 8, 24, 64, 1000}) {
     DataBuffer data_buffer(size);
