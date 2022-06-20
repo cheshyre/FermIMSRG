@@ -2,9 +2,11 @@
 #include "fimsrg/tensor/data/internal/data_buffer.h"
 
 // IWYU pragma: no_include <built-in>
+// IWYU pragma: no_include <unordered_map>
 #include <cstddef>
 #include <initializer_list>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "catch2/catch.hpp"
@@ -256,6 +258,78 @@ TEST_CASE("Test at() (setter and getter) on nonconst.") {
     // Second pass to test sequential collection nature of buffer
     for (std::size_t index = 0; index < data_buffer.size(); index += 1) {
       REQUIRE(data_buffer.at(index) == ref_data[index]);
+    }
+  }
+}
+
+TEST_CASE("Test member swap.") {
+  REQUIRE(std::is_nothrow_swappable_v<DataBuffer>);
+
+  for (const DataBuffer& a : {DataBufferFromDataVector(DataVector1()),
+                              DataBufferFromDataVector(DataVector2()),
+                              DataBufferFromDataVector(DataVector3())}) {
+    for (const DataBuffer& b : {DataBufferFromDataVector(DataVector1()),
+                                DataBufferFromDataVector(DataVector2()),
+                                DataBufferFromDataVector(DataVector3())}) {
+      DataBuffer a_copy(a);
+      double* a_copy_buf_ptr = a_copy.data();
+
+      DataBuffer b_copy(b);
+      double* b_copy_buf_ptr = b_copy.data();
+
+      REQUIRE(a_copy.size() == a.size());
+      REQUIRE(b_copy.size() == b.size());
+
+      a_copy.swap(b_copy);
+
+      REQUIRE(b_copy.size() == a.size());
+      REQUIRE(b_copy.data() == a_copy_buf_ptr);
+      REQUIRE(a_copy.size() == b.size());
+      REQUIRE(a_copy.data() == b_copy_buf_ptr);
+
+      b_copy.swap(a_copy);
+
+      REQUIRE(a_copy.size() == a.size());
+      REQUIRE(a_copy.data() == a_copy_buf_ptr);
+      REQUIRE(b_copy.size() == b.size());
+      REQUIRE(b_copy.data() == b_copy_buf_ptr);
+    }
+  }
+}
+
+TEST_CASE("Test nonmember swap.") {
+  REQUIRE(std::is_nothrow_swappable_v<DataBuffer>);
+
+  for (const DataBuffer& a : {DataBufferFromDataVector(DataVector1()),
+                              DataBufferFromDataVector(DataVector2()),
+                              DataBufferFromDataVector(DataVector3())}) {
+    for (const DataBuffer& b : {DataBufferFromDataVector(DataVector1()),
+                                DataBufferFromDataVector(DataVector2()),
+                                DataBufferFromDataVector(DataVector3())}) {
+      using std::swap;
+
+      DataBuffer a_copy(a);
+      double* a_copy_buf_ptr = a_copy.data();
+
+      DataBuffer b_copy(b);
+      double* b_copy_buf_ptr = b_copy.data();
+
+      REQUIRE(a_copy.size() == a.size());
+      REQUIRE(b_copy.size() == b.size());
+
+      swap(a_copy, b_copy);
+
+      REQUIRE(b_copy.size() == a.size());
+      REQUIRE(b_copy.data() == a_copy_buf_ptr);
+      REQUIRE(a_copy.size() == b.size());
+      REQUIRE(a_copy.data() == b_copy_buf_ptr);
+
+      swap(b_copy, a_copy);
+
+      REQUIRE(a_copy.size() == a.size());
+      REQUIRE(a_copy.data() == a_copy_buf_ptr);
+      REQUIRE(b_copy.size() == b.size());
+      REQUIRE(b_copy.data() == b_copy_buf_ptr);
     }
   }
 }
