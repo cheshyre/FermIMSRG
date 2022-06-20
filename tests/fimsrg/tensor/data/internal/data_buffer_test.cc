@@ -4,6 +4,7 @@
 // IWYU pragma: no_include <built-in>
 #include <cstddef>
 #include <initializer_list>
+#include <type_traits>
 #include <vector>
 
 #include "catch2/catch.hpp"
@@ -37,6 +38,8 @@ inline DataBuffer DataBufferFromDataVector(
 }
 
 TEST_CASE("Test default constructor.") {
+  REQUIRE(std::is_nothrow_default_constructible_v<DataBuffer>);
+
   DataBuffer data_buffer;
 
   REQUIRE(data_buffer.size() == 0);
@@ -97,6 +100,8 @@ TEST_CASE("Test copy constructor (empty).") {
 }
 
 TEST_CASE("Test copy constructor (nonempty).") {
+  REQUIRE(std::is_copy_constructible_v<DataBuffer>);
+
   for (const std::vector<double>& ref_data :
        {DataVector1(), DataVector2(), DataVector3()}) {
     DataBuffer orig = DataBufferFromDataVector((ref_data));
@@ -123,6 +128,8 @@ TEST_CASE("Test move constructor (empty).") {
 }
 
 TEST_CASE("Test move constructor (nonempty).") {
+  REQUIRE(std::is_nothrow_move_constructible_v<DataBuffer>);
+
   for (const std::vector<double>& ref_data :
        {DataVector1(), DataVector2(), DataVector3()}) {
     DataBuffer orig = DataBufferFromDataVector((ref_data));
