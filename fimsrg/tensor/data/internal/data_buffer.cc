@@ -12,7 +12,7 @@ namespace internal {
 static double* AllocateAndCopyBuffer(const double* src_buffer_ptr,
                                      std::size_t src_buffer_size);
 
-DataBuffer::DataBuffer() {}
+DataBuffer::DataBuffer() noexcept {}
 
 DataBuffer::DataBuffer(std::size_t num_elems)
     : num_elems_(num_elems),
@@ -22,7 +22,9 @@ DataBuffer::DataBuffer(const DataBuffer& other)
     : num_elems_(other.size()),
       data_ptr_(AllocateAndCopyBuffer(other.data(), other.size())) {}
 
-DataBuffer::DataBuffer(DataBuffer&& other) : DataBuffer() { swap(other); }
+DataBuffer::DataBuffer(DataBuffer&& other) noexcept : DataBuffer() {
+  swap(other);
+}
 
 DataBuffer::~DataBuffer() { fimsrg::PooledDeallocate(data_ptr_, num_elems_); }
 
@@ -33,7 +35,7 @@ DataBuffer& DataBuffer::operator=(const DataBuffer& other) {
   return *this;
 }
 
-DataBuffer& DataBuffer::operator=(DataBuffer&& other) {
+DataBuffer& DataBuffer::operator=(DataBuffer&& other) noexcept {
   // TODO(mheinz): implement
   (void)other;
 

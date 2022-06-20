@@ -12,7 +12,7 @@ namespace internal {
 class DataBuffer {
  public:
   // Default constructor.
-  DataBuffer();
+  DataBuffer() noexcept;
 
   // Construct data buffer with specific number of elements.
   explicit DataBuffer(std::size_t num_elems);
@@ -21,7 +21,7 @@ class DataBuffer {
   DataBuffer(const DataBuffer& other);
 
   // Move constructor.
-  DataBuffer(DataBuffer&& other);
+  DataBuffer(DataBuffer&& other) noexcept;
 
   // Destructor.
   ~DataBuffer();
@@ -30,7 +30,7 @@ class DataBuffer {
   DataBuffer& operator=(const DataBuffer& other);
 
   // Move assignment.
-  DataBuffer& operator=(DataBuffer&& other);
+  DataBuffer& operator=(DataBuffer&& other) noexcept;
 
   // Get number of elements.
   std::size_t size() const { return num_elems_; }
