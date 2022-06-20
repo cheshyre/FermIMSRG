@@ -36,3 +36,6 @@ build/
 
 # VS code configuration directory
 .vscode/
+
+# clangd Intellisense cache
+.cache/
