@@ -33,8 +33,6 @@ class DataBuffer {
   DataBuffer& operator=(DataBuffer&& other);
 
   // Get number of elements.
-  //
-  // TODO(mheinz): test
   std::size_t size() const { return num_elems_; }
 
   // Get number at index.
