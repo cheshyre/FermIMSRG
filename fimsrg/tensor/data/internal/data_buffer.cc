@@ -22,10 +22,7 @@ DataBuffer::DataBuffer(const DataBuffer& other)
     : num_elems_(other.size()),
       data_ptr_(AllocateAndCopyBuffer(other.data(), other.size())) {}
 
-DataBuffer::DataBuffer(DataBuffer&& other) : DataBuffer() {
-  // TODO(mheinz): implement
-  (void)other;
-}
+DataBuffer::DataBuffer(DataBuffer&& other) : DataBuffer() { swap(other); }
 
 DataBuffer::~DataBuffer() { fimsrg::PooledDeallocate(data_ptr_, num_elems_); }
 
