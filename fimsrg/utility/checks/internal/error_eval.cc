@@ -1,7 +1,7 @@
 // Copyright 2022 Matthias Heinz
 #include "fimsrg/utility/checks/internal/error_eval.h"
 
-#include <stdexcept>
+// IWYU pragma: no_include <exception>
 #include <string>
 #include <string_view>
 

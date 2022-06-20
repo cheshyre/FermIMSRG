@@ -2,6 +2,7 @@
 #ifndef FIMSRG_UTILITY_CHECKS_INTERNAL_ASSERT_EVAL_H_
 #define FIMSRG_UTILITY_CHECKS_INTERNAL_ASSERT_EVAL_H_
 
+// IWYU pragma: no_include <string>
 #include <stdexcept>
 
 namespace fimsrg {
