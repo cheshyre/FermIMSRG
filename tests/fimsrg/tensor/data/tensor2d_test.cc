@@ -139,7 +139,31 @@ TEST_CASE("Test move constructor on nonempty random tensors.") {
   }
 }
 
-// TODO(mheinz): Test copy assign, move assign
+TEST_CASE("Test copy assignment on nonempty random tensors.") {
+  REQUIRE(std::is_copy_assignable_v<Tensor2D>);
+
+  for (const std::size_t orig_dim : {1, 2, 4, 8, 10, 20}) {
+    Tensor2D new_t2 = fimsrg::GenerateRandomTensor2D(orig_dim);
+    for (const std::size_t dim : {1, 2, 4, 8, 10, 20}) {
+      Tensor2D ref_t2 = fimsrg::GenerateRandomTensor2D(dim);
+
+      new_t2 = ref_t2;
+
+      REQUIRE(new_t2.Dim() == dim);
+      REQUIRE(new_t2.CheckInvariants());
+      // No shallow copy
+      REQUIRE(new_t2.data() != ref_t2.data());
+
+      for (std::size_t i = 0; i < dim; i += 1) {
+        for (std::size_t j = 0; j < dim; j += 1) {
+          REQUIRE(new_t2(i, j) == Approx(ref_t2(i, j)).margin(1e-8));
+        }
+      }
+    }
+  }
+}
+
+// TODO(mheinz): Test move assign
 
 TEST_CASE("Test operator() (setter and getter).") {
   for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
