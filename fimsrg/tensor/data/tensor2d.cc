@@ -55,21 +55,32 @@ Tensor2D& Tensor2D::operator+=(const Tensor2D& other) {
 
 Tensor2D& Tensor2D::operator-=(const Tensor2D& other) {
   Expects(other.Dim() == Dim());
-  // TODO(mheinz): implement
-  (void)other;
+
+  for (std::size_t i = 0; i < dim_; i += 1) {
+    for (std::size_t j = 0; j < dim_; j += 1) {
+      (*this)(i, j) -= other(i, j);
+    }
+  }
   return *this;
 }
 
 Tensor2D& Tensor2D::operator*=(const double factor) {
-  // TODO(mheinz): implement
-  (void)factor;
+  for (std::size_t i = 0; i < dim_; i += 1) {
+    for (std::size_t j = 0; j < dim_; j += 1) {
+      (*this)(i, j) *= factor;
+    }
+  }
   return *this;
 }
 
 Tensor2D& Tensor2D::operator/=(const double factor) {
   Expects(factor != 0.0);
-  // TODO(mheinz): implement
-  (void)factor;
+
+  for (std::size_t i = 0; i < dim_; i += 1) {
+    for (std::size_t j = 0; j < dim_; j += 1) {
+      (*this)(i, j) /= factor;
+    }
+  }
   return *this;
 }
 
