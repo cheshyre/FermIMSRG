@@ -1,9 +1,11 @@
 // Copyright 2022 Matthias Heinz
 #include "fimsrg/tensor/data/tensor2d.h"
 
+// IWYU pragma: no_include <unordered_map>
 #include <cstddef>
 #include <initializer_list>
 #include <type_traits>
+#include <utility>  // IWYU pragma: keep
 
 #include "fimsrg/tensor/random/tensor2d.h"
 #include "fimsrg/utility/memory/alignment.h"
@@ -320,7 +322,68 @@ TEST_CASE("Test NumberOfElements() on random tensors.") {
   }
 }
 
-// TODO(mheinz): Test swaps
+TEST_CASE("Test member swap on random tensors.") {
+  REQUIRE(std::is_nothrow_swappable_v<Tensor2D>);
+
+  for (const std::size_t dim_a : {0, 1, 2, 4, 8, 10, 20}) {
+    const Tensor2D a_ref = fimsrg::GenerateRandomTensor2D(dim_a);
+    for (const std::size_t dim_b : {0, 1, 2, 4, 8, 10, 20}) {
+      const Tensor2D b_ref = fimsrg::GenerateRandomTensor2D(dim_b);
+
+      Tensor2D a(a_ref);
+      Tensor2D b(b_ref);
+
+      a.swap(b);
+
+      REQUIRE(a.Dim() == b_ref.Dim());
+      REQUIRE(b.Dim() == a_ref.Dim());
+
+      for (std::size_t i = 0; i < dim_a; i += 1) {
+        for (std::size_t j = 0; j < dim_a; j += 1) {
+          REQUIRE(b(i, j) == a_ref(i, j));
+        }
+      }
+
+      for (std::size_t i = 0; i < dim_b; i += 1) {
+        for (std::size_t j = 0; j < dim_b; j += 1) {
+          REQUIRE(a(i, j) == b_ref(i, j));
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE("Test nonmember swap on random tensors.") {
+  REQUIRE(std::is_nothrow_swappable_v<Tensor2D>);
+
+  for (const std::size_t dim_a : {0, 1, 2, 4, 8, 10, 20}) {
+    const Tensor2D a_ref = fimsrg::GenerateRandomTensor2D(dim_a);
+    for (const std::size_t dim_b : {0, 1, 2, 4, 8, 10, 20}) {
+      const Tensor2D b_ref = fimsrg::GenerateRandomTensor2D(dim_b);
+
+      Tensor2D a(a_ref);
+      Tensor2D b(b_ref);
+
+      using std::swap;
+      swap(a, b);
+
+      REQUIRE(a.Dim() == b_ref.Dim());
+      REQUIRE(b.Dim() == a_ref.Dim());
+
+      for (std::size_t i = 0; i < dim_a; i += 1) {
+        for (std::size_t j = 0; j < dim_a; j += 1) {
+          REQUIRE(b(i, j) == a_ref(i, j));
+        }
+      }
+
+      for (std::size_t i = 0; i < dim_b; i += 1) {
+        for (std::size_t j = 0; j < dim_b; j += 1) {
+          REQUIRE(a(i, j) == b_ref(i, j));
+        }
+      }
+    }
+  }
+}
 
 TEST_CASE("Test nonmember addition of two random tensors.") {
   for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
