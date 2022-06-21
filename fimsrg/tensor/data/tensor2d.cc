@@ -8,6 +8,7 @@
 // PRIVATE
 #include "fimsrg/utility/checks/assert.h"
 #include "fimsrg/utility/memory/alignment.h"
+#include "fimsrg/utility/profiling/function_profile.h"
 
 namespace fimsrg {
 
@@ -16,6 +17,8 @@ static std::size_t DetermineStrideI(std::size_t dim);
 }
 
 Tensor2D Tensor2D::ZerosLike(const Tensor2D& other) {
+  ProfileFunctionWithSize(other.Dim());
+
   return Tensor2D(other.Dim());
 }
 
@@ -44,6 +47,7 @@ bool Tensor2D::CheckInvariants() const {
 
 Tensor2D& Tensor2D::operator+=(const Tensor2D& other) {
   Expects(other.Dim() == Dim());
+  ProfileFunctionWithSize(Dim());
 
   for (std::size_t i = 0; i < dim_; i += 1) {
     for (std::size_t j = 0; j < dim_; j += 1) {
@@ -55,6 +59,7 @@ Tensor2D& Tensor2D::operator+=(const Tensor2D& other) {
 
 Tensor2D& Tensor2D::operator-=(const Tensor2D& other) {
   Expects(other.Dim() == Dim());
+  ProfileFunctionWithSize(Dim());
 
   for (std::size_t i = 0; i < dim_; i += 1) {
     for (std::size_t j = 0; j < dim_; j += 1) {
@@ -65,6 +70,8 @@ Tensor2D& Tensor2D::operator-=(const Tensor2D& other) {
 }
 
 Tensor2D& Tensor2D::operator*=(const double factor) {
+  ProfileFunctionWithSize(Dim());
+
   for (std::size_t i = 0; i < dim_; i += 1) {
     for (std::size_t j = 0; j < dim_; j += 1) {
       (*this)(i, j) *= factor;
@@ -75,6 +82,7 @@ Tensor2D& Tensor2D::operator*=(const double factor) {
 
 Tensor2D& Tensor2D::operator/=(const double factor) {
   Expects(factor != 0.0);
+  ProfileFunctionWithSize(Dim());
 
   for (std::size_t i = 0; i < dim_; i += 1) {
     for (std::size_t j = 0; j < dim_; j += 1) {
@@ -85,6 +93,8 @@ Tensor2D& Tensor2D::operator/=(const double factor) {
 }
 
 double Tensor2D::FrobeniusNorm() const {
+  ProfileFunctionWithSize(Dim());
+
   double norm = 0.0;
   for (std::size_t i = 0; i < dim_; i += 1) {
     for (std::size_t j = 0; j < dim_; j += 1) {
@@ -98,6 +108,8 @@ std::size_t Tensor2D::NumberOfElements() const { return dim_ * dim_; }
 
 Tensor2D operator+(const Tensor2D& a, const Tensor2D& b) {
   Expects(a.Dim() == b.Dim());
+  ProfileFunctionWithSize(a.Dim());
+
   Tensor2D c(a);
   c += b;
   return c;
@@ -105,6 +117,8 @@ Tensor2D operator+(const Tensor2D& a, const Tensor2D& b) {
 
 Tensor2D operator-(const Tensor2D& a, const Tensor2D& b) {
   Expects(a.Dim() == b.Dim());
+  ProfileFunctionWithSize(a.Dim());
+
   Tensor2D c(a);
   c -= b;
   return c;
@@ -112,12 +126,16 @@ Tensor2D operator-(const Tensor2D& a, const Tensor2D& b) {
 
 Tensor2D operator*(const Tensor2D& a, const double factor) {
   Tensor2D c(a);
+  ProfileFunctionWithSize(a.Dim());
+
   c *= factor;
   return c;
 }
 
 Tensor2D operator/(const Tensor2D& a, const double factor) {
   Expects(factor != 0.0);
+  ProfileFunctionWithSize(a.Dim());
+
   Tensor2D c(a);
   c /= factor;
   return c;
