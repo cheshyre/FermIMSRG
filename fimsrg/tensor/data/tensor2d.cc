@@ -85,14 +85,16 @@ Tensor2D& Tensor2D::operator/=(const double factor) {
 }
 
 double Tensor2D::FrobeniusNorm() const {
-  // TODO(mheinz): implement
-  return 0.0;
+  double norm = 0.0;
+  for (std::size_t i = 0; i < dim_; i += 1) {
+    for (std::size_t j = 0; j < dim_; j += 1) {
+      norm += (*this)(i, j) * (*this)(i, j);
+    }
+  }
+  return norm;
 }
 
-std::size_t Tensor2D::NumberOfElements() const {
-  // TODO(mheinz): implement
-  return 0;
-}
+std::size_t Tensor2D::NumberOfElements() const { return dim_ * dim_; }
 
 Tensor2D operator+(const Tensor2D& a, const Tensor2D& b) {
   Expects(a.Dim() == b.Dim());
