@@ -13,8 +13,6 @@ namespace fimsrg {
 class Tensor2D {
  public:
   // Build a new tensor with zeros with the same dimension as reference.
-  //
-  // TODO(mheinz): test on random tensors
   static Tensor2D ZerosLike(const Tensor2D& other);
 
   // Default constructor (dim = 0, no matrix elements).
