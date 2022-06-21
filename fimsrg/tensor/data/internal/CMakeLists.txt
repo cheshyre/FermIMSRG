@@ -12,4 +12,5 @@ target_link_libraries(
   PRIVATE
   fermimsrg::memory
   fermimsrg::checks
+  fermimsrg::profiling
 )

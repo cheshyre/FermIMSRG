@@ -3,8 +3,10 @@
 
 #include <cstddef>
 
+// PRIVATE
 #include "fimsrg/utility/checks/assert.h"
 #include "fimsrg/utility/memory/allocate.h"
+#include "fimsrg/utility/profiling/function_profile.h"
 
 namespace fimsrg {
 namespace internal {
@@ -29,6 +31,8 @@ DataBuffer::DataBuffer(DataBuffer&& other) noexcept : DataBuffer() {
 DataBuffer::~DataBuffer() { fimsrg::PooledDeallocate(data_ptr_, num_elems_); }
 
 DataBuffer& DataBuffer::operator=(const DataBuffer& other) {
+  ProfileFunctionWithSize(other.size());
+
   // Suboptimal implementation due to reallocation
   // despite perhaps not needing it
 
@@ -60,6 +64,8 @@ double& DataBuffer::at(std::size_t index) {
 
 double* AllocateAndCopyBuffer(const double* src_buffer_ptr,
                               std::size_t src_buffer_size) {
+  ProfileFunctionWithSize(src_buffer_size);
+
   double* new_buffer_ptr = fimsrg::PooledAllocate<double>(src_buffer_size);
 
   for (std::size_t i = 0; i < src_buffer_size; i += 1) {
