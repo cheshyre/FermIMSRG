@@ -1,4 +1,5 @@
 add_subdirectory(utility)
+add_subdirectory(tensor)
 
 add_executable(
     version_test
