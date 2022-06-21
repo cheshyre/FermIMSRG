@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <type_traits>
 
+#include "fimsrg/tensor/random/tensor2d.h"
 #include "fimsrg/utility/memory/alignment.h"
 
 #include "catch2/catch.hpp"
@@ -18,6 +19,23 @@ inline double SampleMatrixElementValue(std::size_t i, std::size_t j) {
 TEST_CASE("Test factory method on zero-initialized tensors.") {
   for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
     Tensor2D ref_t2(dim);
+
+    const Tensor2D new_t2 = Tensor2D::ZerosLike(ref_t2);
+
+    REQUIRE(new_t2.Dim() == dim);
+    REQUIRE(new_t2.CheckInvariants());
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(new_t2(i, j) == 0.0);
+      }
+    }
+  }
+}
+
+TEST_CASE("Test factory method on random tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D ref_t2 = fimsrg::GenerateRandomTensor2D(dim);
 
     const Tensor2D new_t2 = Tensor2D::ZerosLike(ref_t2);
 

@@ -7,6 +7,7 @@ add_executable(
 target_link_libraries(
   tensor2d_test
   fermimsrg::tensor
+  fermimsrg::tensor_random
   fermimsrg::memory
   Catch2::Catch2WithMain
 )
