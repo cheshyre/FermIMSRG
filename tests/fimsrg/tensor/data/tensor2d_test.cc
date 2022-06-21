@@ -93,6 +93,8 @@ TEST_CASE("Test standard constructor, CheckInvariants(), and operator().") {
 }
 
 TEST_CASE("Test copy constructor on nonempty random tensors.") {
+  REQUIRE(std::is_copy_constructible_v<Tensor2D>);
+
   for (const std::size_t dim : {1, 2, 4, 8, 10, 20}) {
     Tensor2D ref_t2 = fimsrg::GenerateRandomTensor2D(dim);
 
