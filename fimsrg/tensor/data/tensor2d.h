@@ -64,7 +64,29 @@ class Tensor2D {
   // Check that invariants are fulfilled.
   bool CheckInvariants() const;
 
-  // TODO(mheinz): implement arithmetic ops
+  // Add another tensor into current tensor.
+  //
+  // Requires: other.Dim() == Dim();
+  Tensor2D& operator+=(const Tensor2D& other);
+
+  // Subtract another tensor from current tensor.
+  //
+  // Requires: other.Dim() == Dim();
+  Tensor2D& operator-=(const Tensor2D& other);
+
+  // Multiply tensor by overall scalar factor.
+  Tensor2D& operator*=(double factor);
+
+  // Divide tensor by overall scalar factor.
+  //
+  // Requires: factor != 0.0;
+  Tensor2D& operator/=(double factor);
+
+  // Compute the Frobenius norm (M_ij * M_ij in Einstein notation).
+  double FrobeniusNorm() const;
+
+  // Compute the total number of tensor elements.
+  std::size_t NumberOfElements() const;
 
   // Swap with other tensor.
   void swap(Tensor2D& other) noexcept {
@@ -89,7 +111,28 @@ class Tensor2D {
 // Swap two tensors.
 inline void swap(Tensor2D& a, Tensor2D& b) noexcept { a.swap(b); }
 
-// TODO(mheinz): implement arithmetic ops
+// Add two tensors.
+//
+// Requires: a.Dim() == b.Dim();
+Tensor2D operator+(const Tensor2D& a, const Tensor2D& b);
+
+// Subtract tensor b from a.
+//
+// Requires: a.Dim() == b.Dim();
+Tensor2D operator-(const Tensor2D& a, const Tensor2D& b);
+
+// Multiply a tensor by a scalar factor.
+Tensor2D operator*(const Tensor2D& tens, double factor);
+
+// Multiply a tensor by a scalar factor.
+inline Tensor2D operator*(double factor, const Tensor2D& tens) {
+  return operator*(tens, factor);
+}
+
+// Divide a tensor by a scalar factor.
+//
+// Requires: factor != 0.0;
+Tensor2D operator/(const Tensor2D& tens, double factor);
 
 }  // namespace fimsrg
 

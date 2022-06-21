@@ -42,6 +42,70 @@ bool Tensor2D::CheckInvariants() const {
   return (stride_i_ >= dim_) && (buffer_.size() >= dim_ * stride_i_);
 }
 
+Tensor2D& Tensor2D::operator+=(const Tensor2D& other) {
+  Expects(other.Dim() == Dim());
+  // TODO(mheinz): implement
+  (void)other;
+  return *this;
+}
+
+Tensor2D& Tensor2D::operator-=(const Tensor2D& other) {
+  Expects(other.Dim() == Dim());
+  // TODO(mheinz): implement
+  (void)other;
+  return *this;
+}
+
+Tensor2D& Tensor2D::operator*=(const double factor) {
+  // TODO(mheinz): implement
+  (void)factor;
+  return *this;
+}
+
+Tensor2D& Tensor2D::operator/=(const double factor) {
+  Expects(factor != 0.0);
+  // TODO(mheinz): implement
+  (void)factor;
+  return *this;
+}
+
+double Tensor2D::FrobeniusNorm() const {
+  // TODO(mheinz): implement
+  return 0.0;
+}
+
+std::size_t Tensor2D::NumberOfElements() const {
+  // TODO(mheinz): implement
+  return 0;
+}
+
+Tensor2D operator+(const Tensor2D& a, const Tensor2D& b) {
+  Expects(a.Dim() == b.Dim());
+  Tensor2D c(a);
+  c += b;
+  return c;
+}
+
+Tensor2D operator-(const Tensor2D& a, const Tensor2D& b) {
+  Expects(a.Dim() == b.Dim());
+  Tensor2D c(a);
+  c -= b;
+  return c;
+}
+
+Tensor2D operator*(const Tensor2D& a, const double factor) {
+  Tensor2D c(a);
+  c *= factor;
+  return c;
+}
+
+Tensor2D operator/(const Tensor2D& a, const double factor) {
+  Expects(factor != 0.0);
+  Tensor2D c(a);
+  c /= factor;
+  return c;
+}
+
 namespace internal {
 std::size_t DetermineStrideI(std::size_t dim) {
   return fimsrg::RoundUpToMultipleOfAlignment<double>(dim);

@@ -211,8 +211,188 @@ TEST_CASE("Test operator() (setter and getter).") {
   }
 }
 
-// TODO(mheinz): Test arithmetic ops
+TEST_CASE("Test member addition of two random tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+    Tensor2D b = fimsrg::GenerateRandomTensor2D(dim);
+    Tensor2D a_copy(a);
+
+    a += b;
+
+    REQUIRE(a.Dim() == dim);
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(a(i, j) == Approx(a_copy(i, j) + b(i, j)).margin(1e-8));
+      }
+    }
+  }
+}
+
+TEST_CASE("Test member subtraction of two random tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+    Tensor2D b = fimsrg::GenerateRandomTensor2D(dim);
+    Tensor2D a_copy(a);
+
+    a -= b;
+
+    REQUIRE(a.Dim() == dim);
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(a(i, j) == Approx(a_copy(i, j) - b(i, j)).margin(1e-8));
+      }
+    }
+  }
+}
+
+TEST_CASE("Test member multiplication of random tensor by various factors.") {
+  for (const double factor : {-0.1, 0.0, 2.0, 3.14}) {
+    for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+      Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+      Tensor2D a_copy(a);
+
+      a *= factor;
+
+      REQUIRE(a.Dim() == dim);
+
+      for (std::size_t i = 0; i < dim; i += 1) {
+        for (std::size_t j = 0; j < dim; j += 1) {
+          REQUIRE(a(i, j) == Approx(a_copy(i, j) * factor).margin(1e-8));
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE("Test member division of random tensor by various nonzero factors.") {
+  for (const double factor : {-0.1, 0.01, 2.0, 3.14}) {
+    for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+      Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+      Tensor2D a_copy(a);
+
+      a /= factor;
+
+      REQUIRE(a.Dim() == dim);
+
+      for (std::size_t i = 0; i < dim; i += 1) {
+        for (std::size_t j = 0; j < dim; j += 1) {
+          REQUIRE(a(i, j) == Approx(a_copy(i, j) / factor).margin(1e-8));
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE("Test FrobeniusNorm on 2x2 matrix.") {
+  Tensor2D a(2);
+
+  a(0, 0) = 0.0;
+  a(0, 1) = 2.0;
+  a(1, 0) = -2.0;
+  a(1, 1) = 9.0;
+
+  REQUIRE(a.FrobeniusNorm() == Approx(89.0).margin(1e-8));
+}
+
+TEST_CASE("Test FrobeniusNorm on dim-by-dim matrices.") {
+  for (const double val : {-0.1, 0.01, 2.0, 3.14}) {
+    for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+      Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+
+      for (std::size_t i = 0; i < dim; i += 1) {
+        for (std::size_t j = 0; j < dim; j += 1) {
+          a(i, j) = val;
+        }
+      }
+
+      REQUIRE(a.FrobeniusNorm() == Approx(dim * dim * val * val).margin(1e-8));
+    }
+  }
+}
+
+TEST_CASE("Test NumberOfElements() on random tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+
+    REQUIRE(a.NumberOfElements() == dim * dim);
+  }
+}
 
 // TODO(mheinz): Test swaps
 
-// TODO(mheinz): Test arithmetic ops
+TEST_CASE("Test nonmember addition of two random tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+    Tensor2D b = fimsrg::GenerateRandomTensor2D(dim);
+
+    Tensor2D c = a + b;
+
+    REQUIRE(c.Dim() == dim);
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(c(i, j) == Approx(a(i, j) + b(i, j)).margin(1e-8));
+      }
+    }
+  }
+}
+
+TEST_CASE("Test nonmember subtraction of two random tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+    Tensor2D b = fimsrg::GenerateRandomTensor2D(dim);
+
+    Tensor2D c = a - b;
+
+    REQUIRE(c.Dim() == dim);
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(c(i, j) == Approx(a(i, j) - b(i, j)).margin(1e-8));
+      }
+    }
+  }
+}
+
+TEST_CASE(
+    "Test nonmember multiplication of random tensor by various factors.") {
+  for (const double factor : {-0.1, 0.0, 2.0, 3.14}) {
+    for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+      Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+
+      Tensor2D c = a * factor;
+      Tensor2D c_prime = factor * a;
+
+      REQUIRE(c.Dim() == dim);
+      REQUIRE(c_prime.Dim() == dim);
+
+      for (std::size_t i = 0; i < dim; i += 1) {
+        for (std::size_t j = 0; j < dim; j += 1) {
+          REQUIRE(c(i, j) == Approx(a(i, j) * factor).margin(1e-8));
+          REQUIRE(c_prime(i, j) == Approx(a(i, j) * factor).margin(1e-8));
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE(
+    "Test nonmember division of random tensor by various nonzero factors.") {
+  for (const double factor : {-0.1, 0.01, 2.0, 3.14}) {
+    for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+      Tensor2D a = fimsrg::GenerateRandomTensor2D(dim);
+
+      Tensor2D c = a / factor;
+
+      REQUIRE(c.Dim() == dim);
+
+      for (std::size_t i = 0; i < dim; i += 1) {
+        for (std::size_t j = 0; j < dim; j += 1) {
+          REQUIRE(c(i, j) == Approx(a(i, j) / factor).margin(1e-8));
+        }
+      }
+    }
+  }
+}
