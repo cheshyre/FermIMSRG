@@ -1,0 +1,102 @@
+// Copyright 2022 Matthias Heinz
+#include "fimsrg/tensor/data/tensor2d.h"
+
+#include <cstddef>
+#include <initializer_list>
+#include <type_traits>
+
+#include "fimsrg/utility/memory/alignment.h"
+
+#include "catch2/catch.hpp"
+
+using fimsrg::Tensor2D;
+
+inline double SampleMatrixElementValue(std::size_t i, std::size_t j) {
+  return 1.0 * (1000 * i + j) - 2000.0;
+}
+
+TEST_CASE("Test factory method on zero-initialized tensors.") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D ref_t2(dim);
+
+    const Tensor2D new_t2 = Tensor2D::ZerosLike(ref_t2);
+
+    REQUIRE(new_t2.Dim() == dim);
+    REQUIRE(new_t2.CheckInvariants());
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(new_t2(i, j) == 0.0);
+      }
+    }
+  }
+}
+
+TEST_CASE("Test default constructor.") {
+  REQUIRE(std::is_nothrow_default_constructible_v<Tensor2D>);
+
+  Tensor2D tens;
+
+  REQUIRE(tens.Dim() == 0);
+  REQUIRE(tens.CheckInvariants());
+  REQUIRE(tens.data() == nullptr);
+}
+
+TEST_CASE("Test standard constructor and Dim().") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D t2(dim);
+
+    REQUIRE(t2.Dim() == dim);
+  }
+}
+
+TEST_CASE("Test standard constructor and StrideI().") {
+  using fimsrg::GetMinimumAlignment;
+
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D t2(dim);
+
+    REQUIRE((t2.StrideI() * sizeof(double)) % GetMinimumAlignment() == 0);
+  }
+}
+
+TEST_CASE("Test standard constructor, CheckInvariants(), and operator().") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D t2(dim);
+
+    REQUIRE(t2.CheckInvariants());
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(t2(i, j) == 0.0);
+      }
+    }
+  }
+}
+
+// TODO(mheinz): Test copy ctor, move ctor, copy assign, move assign
+
+TEST_CASE("Test operator() (setter and getter).") {
+  for (const std::size_t dim : {0, 1, 2, 4, 8, 10, 20}) {
+    Tensor2D t2(dim);
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        t2(i, j) = SampleMatrixElementValue(i, j);
+        REQUIRE(t2(i, j) == SampleMatrixElementValue(i, j));
+      }
+    }
+
+    for (std::size_t i = 0; i < dim; i += 1) {
+      for (std::size_t j = 0; j < dim; j += 1) {
+        REQUIRE(t2(i, j) == SampleMatrixElementValue(i, j));
+      }
+    }
+  }
+}
+
+// TODO(mheinz): Test arithmetic ops
+
+// TODO(mheinz): Test swaps
+
+// TODO(mheinz): Test arithmetic ops
