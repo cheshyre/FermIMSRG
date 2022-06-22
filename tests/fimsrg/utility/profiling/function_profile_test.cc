@@ -1,9 +1,12 @@
 // Copyright 2022 Matthias Heinz
 #include "fimsrg/utility/profiling/function_profile.h"
 
-#include "catch2/catch.hpp"
+#include <string>
+#include <vector>
 
 #include "fimsrg/utility/profiling/profile_report.h"
+
+#include "catch2/catch.hpp"
 
 static int One() {
   ProfileFunction();
@@ -34,6 +37,6 @@ TEST_CASE("Test profiling two functions gives two profile entries.") {
   val += TimesOneHundred(1);
 
   REQUIRE(val == 1105);
-  const auto entries = fimsrg::GetProfileReportEntries();
+  const std::vector<std::string> entries = fimsrg::GetProfileReportEntries();
   REQUIRE(entries.size() == 4);
 }

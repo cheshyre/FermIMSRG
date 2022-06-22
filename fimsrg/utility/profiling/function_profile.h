@@ -18,6 +18,8 @@
 #ifndef FIMSRG_UTILITY_PROFILING_FUNCTION_PROFILE_H_
 #define FIMSRG_UTILITY_PROFILING_FUNCTION_PROFILE_H_
 
+// IWYU pragma: no_include <memory>
+
 #include "fimsrg/utility/profiling/internal/single_event_profiler.h"
 
 #define ProfileFunction()                                             \

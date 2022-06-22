@@ -1,0 +1,12 @@
+add_executable(
+  data_buffer_test
+  data_buffer_test.cc
+)
+target_link_libraries(
+  data_buffer_test
+  fermimsrg_tensor_data_internal
+  Catch2::Catch2WithMain
+)
+catch_discover_tests(
+  data_buffer_test
+)
