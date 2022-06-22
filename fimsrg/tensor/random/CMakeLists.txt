@@ -1,6 +1,7 @@
 add_library(
   fermimsrg_tensor_random
   tensor2d.h tensor2d.cc
+  tensor4d.h tensor4d.cc
 )
 add_library(fermimsrg::tensor_random ALIAS fermimsrg_tensor_random)
 target_include_directories(

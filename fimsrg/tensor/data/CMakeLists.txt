@@ -3,6 +3,7 @@ add_subdirectory(internal)
 add_library(
   fermimsrg_tensor
   tensor2d.h tensor2d.cc
+  tensor4d.h tensor4d.cc
 )
 add_library(fermimsrg::tensor ALIAS fermimsrg_tensor)
 target_include_directories(
