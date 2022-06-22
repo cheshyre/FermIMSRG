@@ -14,3 +14,18 @@ target_link_libraries(
 catch_discover_tests(
   tensor2d_test
 )
+
+add_executable(
+  tensor4d_test
+  tensor4d_test.cc
+)
+target_link_libraries(
+  tensor4d_test
+  fermimsrg::tensor
+  fermimsrg::tensor_random
+  fermimsrg::memory
+  Catch2::Catch2WithMain
+)
+catch_discover_tests(
+  tensor4d_test
+)
